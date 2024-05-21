@@ -60,6 +60,7 @@ To run this application locally, follow these steps:
 
 
 ## Preview / Screenshot
+![alt text](E-commerce-Back-End.gif)
 
 ## Contact
 For more projects and information about the developer, please visit:
