@@ -6,14 +6,11 @@ const { Tag, Product, ProductTag } = require('../../models');
 // Find all tags
 router.get('/', async (req, res) => {
   try {
-    
     const tags = await Tag.findAll({
       include: [{ model: Product, through: ProductTag }],
     });
-   
     res.status(200).json(tags);
   } catch (err) {
-    
     res.status(500).json(err);
   }
 });
@@ -21,76 +18,71 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    
+    // Find tag by primary key
     const tag = await Tag.findByPk(req.params.id, {
       include: [{ model: Product, through: ProductTag }],
     });
-    
+    // If tag is not found, return 404 status
     if (!tag) {
       res.status(404).json({ message: 'No tag found' });
       return;
     }
-    
+    // Return the found tag
     res.status(200).json(tag);
   } catch (err) {
-    
     res.status(500).json(err);
   }
 });
 
-
+// Create a new tag
 router.post('/', async (req, res) => {
   try {
-    
+    // Create a new tag with the data from the request body
     const tagData = await Tag.create(req.body);
-  
-    res.status(201).json(tagData);
+    // Respond with a 201 status and the created tag data
+    res.status(200).json(tagData);
   } catch (err) {
-    
-    res.status(400).json(err);
+    // If an error occurs, respond with a 400 status and the error message
+    res.status(400).json({ message: 'Creation failed' });
   }
 });
 
 
+// Update a tag by its ID
 router.put('/:id', async (req, res) => {
   try {
-    
-    const tag = await Tag.update(req.body, {
-      where: {
-        id: req.params.id,
-      },
-    });
-   
-    if (!tag[0]) {
-      res.status(404).json({ message: 'No tag found' });
-      return;
+    // Update tag by ID
+    const updated = await Tag.update(req.body, { where: { id: req.params.id } });
+
+    // Check if the update operation was successful
+    if (!updated[0]) {
+      // If no tag was updated, return 404 status with a message
+      res.status(404).json({ message: 'No Tag found' });
+    } else {
+      // If tag was updated successfully, return 200 status with an action flag
+      res.status(200).json({ action: 1 });
     }
-    
-    res.status(200).json({ message: 'Tag updated' });
   } catch (err) {
-  
-    res.status(500).json(err);
+    // Handle errors by responding with a 500 status and an internal server error message
+    res.status(500).json({ message: "Tag was not updated", error: err });
   }
 });
 
 
+
+// Delete a tag by its `id` value
 router.delete('/:id', async (req, res) => {
   try {
-    
-    const tag = await Tag.destroy({
+    const deleted = await Tag.destroy({
       where: {
         id: req.params.id,
-      },
+      } 
     });
-   
-    if (!tag) {
-      res.status(404).json({ message: 'No tag found' });
-      return;
-    }
-   
-    res.status(200).json({ message: 'Tag deleted' });
+
+    // If the Tag is not found, respond with a 404 status and a message
+    !deleted ? res.status(404).json({ message: 'No Tag found' }) : res.status(200).json(deleted);
   } catch (err) {
-  
+    // If an error occurs, respond with a 500 status and include the error message
     res.status(500).json({ message: "Tag was not deleted", error: err });
   }
 });
