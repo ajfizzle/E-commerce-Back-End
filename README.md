@@ -42,13 +42,17 @@ To run this application locally, follow these steps:
     - `npm i sequelize`
     - `npm i pg`
     - `npm i dotenv`
-       ## Note: Ensure "package.json" is configured with the accurate attributes.
+       ## Note:
+       - Ensure "package.json" is configured with the accurate attributes.
+       - Use your DB credentials to access the environment is added to `.env` file in the root directory
 
-3. Create a `.env` file in the root directory and add the following environment:
-4. Run schema and seed commands:
+3. run `psql`then enter your passcode
+4. Run schema command:
     - `\i schema.sql`
+    - `\q`
+5. Run seed command:
     - `npm run seed`
-5. Start the server by running: `npm start` or `node server.js`
+6. Start the server by running: `npm start` or `node server.js`
 
 ## Usage
 - Open Insomnia Core to test the API routes.

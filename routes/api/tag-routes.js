@@ -55,13 +55,7 @@ router.put('/:id', async (req, res) => {
     const updated = await Tag.update(req.body, { where: { id: req.params.id } });
 
     // Check if the update operation was successful
-    if (!updated[0]) {
-      // If no tag was updated, return 404 status with a message
-      res.status(404).json({ message: 'No Tag found' });
-    } else {
-      // If tag was updated successfully, return 200 status with an action flag
-      res.status(200).json({ action: 1 });
-    }
+    !updated[0] ? res.status(404).json({ message: 'No CategTagory found' }) : res.status(200).json(updated);
   } catch (err) {
     // Handle errors by responding with a 500 status and an internal server error message
     res.status(500).json({ message: "Tag was not updated", error: err });
